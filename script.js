@@ -13,7 +13,7 @@ function preloadImage() {
     for (var i = 1; i <= frames.maxindex; i++) { // Corrected loop range
         const imageUrl = `./assests/1000104726_0001(${i}).png`;
         const img = new Image();
-        img.src = imageUrl;z
+        img.src = imageUrl;
         // console.log(imageUrl)
         img.onload = () => {
             imageLoaded++;
