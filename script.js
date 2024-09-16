@@ -14,7 +14,7 @@ function preloadImage() {
         const imageUrl = `./assests/1000104726_0001(${i}).png`;
         const img = new Image();
         img.src = imageUrl;
-        // console.log(imageUrl)
+        console.log(imageUrl)
         img.onload = () => {
             imageLoaded++;
             if (imageLoaded === frames.maxindex) {
