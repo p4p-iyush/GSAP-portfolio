@@ -1,0 +1,99 @@
+/* Loader - Tree Base */
+.tree {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Peacock Feather (Leaf) */
+.leaf {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 60px;
+  height: 120px;
+  border-radius: 30% 70% 70% 30% / 20% 30% 70% 80%;
+  box-shadow: 
+    0 0 20px 5px rgba(0, 170, 180, 0.6), /* Cyan glow */
+    0 0 40px 10px rgba(138, 0, 226, 0.4); /* Purple glow */
+  background: 
+    linear-gradient(
+      135deg,
+      #008080,   /* Teal */
+      #00a0a0,   /* Light Teal */
+      #40c0cb,   /* Cyan */
+      #7b4dff,   /* Violet */
+      #3b00b9    /* Deep Indigo */
+    );
+  background-size: 200% 200%;
+  opacity: 0.9;
+  z-index: 1;
+
+  /* Feather Eye (Tip) */
+  clip-path: path('M30,10 C40,20 50,40 50,60 C50,80 40,100 30,110 C20,100 10,80 10,60 C10,40 20,20 30,10 Z');
+}
+
+/* Feather Stem (central line) */
+.leaf::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 28px;
+  width: 4px;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, #fff 50%, transparent);
+  box-shadow: 0 0 8px #fff;
+  z-index: 2;
+}
+
+/* Feather "Eye" Spot (Iridescent glow at tip) */
+.leaf::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 22px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    #fff, 
+    #00eaff, 
+    #8a2be2, 
+    #008080);
+  box-shadow: 0 0 15px 5px rgba(138, 43, 226, 0.6);
+  animation: pulse 3s infinite alternate;
+  z-index: 3;
+}
+
+/* Animation: Floating & Shimmering */
+@keyframes float {
+  0%, 100% {
+    transform: translateX(-50%) rotate(45deg) translateY(0);
+  }
+  50% {
+    transform: translateX(-52%) rotate(43deg) translateY(-10px);
+  }
+}
+
+/* Animation: Color Shift (Iridescence) */
+@keyframes shimmer {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 200%; }
+}
+
+/* Animation: Pulse on Eye */
+@keyframes pulse {
+  0% { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Apply Animations */
+.leaf {
+  animation: float 6s ease-in-out infinite, shimmer 8s linear infinite;
+}

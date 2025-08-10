@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "MIS for Police",
+    "description": "A working prototype with backend integration for police management.",
+    "image": "project_canvas.jpeg",
+    "url": "https://misportalbpl.000webhostapp.com/",
+    "category": "Full Stack"
+  },
+  {
+    "id": 2,
+    "title": "Tic Tac Toe Game",
+    "description": "A responsive game with animations, winner detection, and reset button.",
+    "image": "project_canvas.jpeg",
+    "url": "https://p4p-iyush.github.io/Tic-Tac-Toe-game/",
+    "category": "Frontend"
+  },
+  {
+    "id": 3,
+    "title": "Moving Car",
+    "description": "Interactive car animation with arrow key controls and horn sound.",
+    "image": "project_canvas.jpeg",
+    "url": "https://p4p-iyush.github.io/moving_car/",
+    "category": "Animation"
+  },
+  {
+    "id": 4,
+    "title": "My Portfolio",
+    "description": "Built with HTML, CSS, JavaScript, and GSAP to showcase skills and projects.",
+    "image": "project_canvas.jpeg",
+    "url": "https://p4p-iyush.github.io/Portfolio/",
+    "category": "Frontend"
+  },
+  {
+    "id": 5,
+    "title": "Rock-Paper-Scissors Game",
+    "description": "Interactive game with score tracking, responsive design, and animations.",
+    "image": "project_canvas.jpeg",
+    "url": "https://p4p-iyush.github.io/stone-paper-scissor/",
+    "category": "Frontend"
+  },
+  {
+    "id": 6,
+    "title": "BSY Consulting Website",
+    "description": "Professional website using HTML, CSS, JS, and PHPMailer for job applications.",
+    "image": "project_canvas.jpeg",
+    "url": "https://bsyconsulting.in/",
+    "category": "Full Stack"
+  },
+  {
+    "id": 7,
+    "title": "Elementary School Website",
+    "description": "Fun and engaging website created using Wix for an elementary school.",
+    "image": "project_canvas.jpeg",
+    "url": "https://jain4piyush.wixsite.com/elementryschool",
+    "category": "Design"
+  }
+]

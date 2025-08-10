@@ -10,20 +10,67 @@ const Images = [];
 let imageLoaded = 0;
 
 function preloadImage() {
-    for (var i = 1; i <= frames.maxindex; i++) { // Corrected loop range
-        const imageUrl = `./assests/1000104726_0001(${i}).png`;
-        const img = new Image();
-        img.src = imageUrl;
-        // console.log(imageUrl)
-        img.onload = () => {
-            imageLoaded++;
-            if (imageLoaded === frames.maxindex) {
-                loadImage(frames.currentindex); // Corrected 'frame.curentindex' to 'frames.currentindex'
-                startAnimation();
-            }
-        };
-        Images.push(img);
+    const TOTAL_FRAMES = 107;
+    const CHUNK_SIZE = 120;
+    let currentChunk = 0;
+    let loadedCount = 0;
+
+    function loadNextChunk() {
+        const start = currentChunk * CHUNK_SIZE + 1;
+        const end = Math.min(start + CHUNK_SIZE - 1, TOTAL_FRAMES);
+
+        let inChunkLoaded = 0;
+        const totalInChunk = end - start + 1;
+
+        // Load all images in this chunk
+        for (let i = start; i <= end; i++) {
+            const img = new Image();
+            img.src = `./assests/1000104726_0001(${i}).png`;
+
+            img.onload = () => {
+                inChunkLoaded++;
+                loadedCount++;
+                Images[i] = img;
+
+                // Show first frame immediately
+                if (loadedCount === 1) {
+                    loadImage(1);
+                }
+
+                // Check if chunk is complete
+                if (inChunkLoaded === totalInChunk) {
+                    currentChunk++;
+
+                    // If more chunks, load next
+                    if (start + CHUNK_SIZE <= TOTAL_FRAMES) {
+                        loadNextChunk();
+                    } else {
+                        // All done!
+                        console.log("All frames loaded!");
+                        startAnimation();
+                    }
+                }
+            };
+
+            img.onerror = () => {
+                inChunkLoaded++;
+                Images[i] = null;
+                if (inChunkLoaded === totalInChunk) {
+                    currentChunk++;
+                    if (start + CHUNK_SIZE <= TOTAL_FRAMES) {
+                        loadNextChunk();
+                    } else {
+                        startAnimation();
+                    }
+                }
+            };
+
+            Images[i] = img; // Store even if not loaded yet
+        }
     }
+
+    // Start with first chunk
+    loadNextChunk();
 }
 
 function loadImage(index) {
@@ -82,49 +129,57 @@ function startAnimation() {
     });
 
 }
-var tl1=gsap.timeline({scrollTrigger:{
-    trigger:"#page1",
-    start:"top,top",
-    end:"50%,50%",
-    scrub:true,
-    // markers:true
-}})
-
-tl1.to("#canvas",{
-    left:"50%"
+var tl1 = gsap.timeline({
+    scrollTrigger: {
+        trigger: "#page1",
+        start: "top,top",
+        end: "50%,50%",
+        scrub: true,
+        // markers:true
+    }
 })
-var tl2=gsap.timeline({scrollTrigger:{
-    trigger:"#page2",
-    start:"top,top",
-    end:"50%,50%",
-    scrub:true,
-    // markers:true
-}})
 
-tl2.to("#canvas",{
-    left:"10%"
+tl1.to("#canvas", {
+    left: "50%"
 })
-var tl3=gsap.timeline({scrollTrigger:{
-    trigger:"#page3",
-    start:"0%,50%",
-    end:"40%,50%",
-    scrub:true,
-    // markers:true
-}})
-
-tl3.to("#canvas",{
-    left:"50%"
+var tl2 = gsap.timeline({
+    scrollTrigger: {
+        trigger: "#page2",
+        start: "top,top",
+        end: "50%,50%",
+        scrub: true,
+        // markers:true
+    }
 })
-var tl4=gsap.timeline({scrollTrigger:{
-    trigger:"#page4",
-    start:"0%,50%",
-    end:"40%,50%",
-    scrub:true,
-    // markers:true
-}})
 
-tl4.to("#canvas",{
-    right:"15%"
+tl2.to("#canvas", {
+    left: "10%"
+})
+var tl3 = gsap.timeline({
+    scrollTrigger: {
+        trigger: "#page3",
+        start: "0%,50%",
+        end: "40%,50%",
+        scrub: true,
+        // markers:true
+    }
+})
+
+tl3.to("#canvas", {
+    left: "50%"
+})
+var tl4 = gsap.timeline({
+    scrollTrigger: {
+        trigger: "#page4",
+        start: "0%,50%",
+        end: "40%,50%",
+        scrub: true,
+        // markers:true
+    }
+})
+
+tl4.to("#canvas", {
+    right: "15%"
 })
 
 
@@ -174,34 +229,94 @@ const drawDots = () => {
 
 // Draw the dots on the canvas
 drawDots();
-banner.addEventListener('mousemove',(event)=>{
-    ctx.clearRect(0,0,canvas_2.width,canvas_2.height)
+banner.addEventListener('mousemove', (event) => {
+    ctx.clearRect(0, 0, canvas_2.width, canvas_2.height)
     drawDots();
-    let mouse ={
+    let mouse = {
         x: event.pageX - banner.getBoundingClientRect().left,
         y: event.pageY - banner.getBoundingClientRect().top
     }
-    dots.forEach(dot =>{
-        let distance= Math.sqrt((mouse.x - dot.x)**2 +(mouse.y - dot.y)**2)
-        if(distance<300){
-            ctx.strokeStyle =dot.color;
-            ctx.lineWidth =1;
+    dots.forEach(dot => {
+        let distance = Math.sqrt((mouse.x - dot.x) ** 2 + (mouse.y - dot.y) ** 2)
+        if (distance < 300) {
+            ctx.strokeStyle = dot.color;
+            ctx.lineWidth = 1;
             ctx.beginPath()
-            ctx.moveTo(dot.x,dot.y);
-            ctx.lineTo(mouse.x,mouse.y);
+            ctx.moveTo(dot.x, dot.y);
+            ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
         }
     })
 })
-banner.addEventListener('mouseout',()=>{
-    ctx.clearRect(0,0,canvas_2.width,canvas_2.height)
+banner.addEventListener('mouseout', () => {
+    ctx.clearRect(0, 0, canvas_2.width, canvas_2.height)
     drawDots()
 })
 
 // loader
 var loader = document.getElementById("tree")
-window.addEventListener("load",()=>{
-    loader.style.display ="none";
+window.addEventListener("load", () => {
+    loader.style.display = "none";
 })
 
+// Load and render projects dynamically
+document.addEventListener("DOMContentLoaded", () => {
+    const gallery = document.querySelector(".project_gallery");
+
+    // Show skeleton loader while loading
+    gallery.innerHTML = `
+    <div class="project_card skeleton">
+      <div class="card_inner">
+        <div class="card_front">Loading...</div>
+      </div>
+    </div>
+    <div class="project_card skeleton">
+      <div class="card_inner">
+        <div class="card_front">Loading...</div>
+      </div>
+    </div>
+    <div class="project_card skeleton">
+      <div class="card_inner">
+        <div class="card_front">Loading...</div>
+      </div>
+    </div>
+  `;
+
+    fetch('projects.json')
+        .then(res => res.json())
+        .then(projects => {
+            gallery.innerHTML = ''; // Clear skeleton
+
+            projects.forEach(project => {
+                const card = document.createElement('div');
+                card.classList.add('project_card');
+                card.innerHTML = `
+          <div class="card_inner">
+            <div class="card_front">
+              <img src="${project.image}" loading="lazy" alt="${project.title}">
+            </div>
+            <div class="card_back">
+              <h3>${project.title}</h3>
+              <p>${project.description}</p>
+              <a href="${project.url}" target="_blank" class="view_button">View Project</a>
+            </div>
+          </div>
+        `;
+                gallery.appendChild(card);
+            });
+
+            // Optional: Animate in with GSAP
+            gsap.from(".project_card", {
+                opacity: 0,
+                y: 50,
+                stagger: 0.2,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        })
+        .catch(err => {
+            console.error("Failed to load projects:", err);
+            gallery.innerHTML = "<p>Could not load projects.</p>";
+        });
+});
 feather.replace();
